@@ -1,0 +1,37 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet"
+		  type="text/css"
+		  href="{% static 'base_style.css' %}"
+	/>
+    <script type="text/javascript"
+            src="{% static 'latexit.js' %}"
+    ></script>
+    <script type="text/javascript"
+            src="{% static 'jquery-2.1.0.min.js' %}"
+    ></script>
+    <script type="text/javascript"
+            src="{% static 'jquery.cookie.js' %}"></script>
+    {% block javascript %}
+    {% endblock %}
+    <link rel="stylesheet"
+          type="text/css"
+          href="{% static 'highlight/styles/solarized_dark.css' %}"
+    />
+    <script src="{% static 'highlight/highlight.pack.js' %}" >   
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <title>Hello!</title>
+</head>
+
+<body>
+	<div class='mid-column'>
+	{% block content %}
+	{% endblock %}
+    </div>
+
+    
+</body>

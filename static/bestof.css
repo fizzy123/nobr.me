@@ -1,0 +1,161 @@
+@import url(http://fonts.googleapis.com/css?family=Libre+Baskerville:300,400,700|Open+Sans:300,400,700);
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+}
+
+hr {
+  width: 1%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+input {
+  border: 0px;
+  border-bottom: 1px solid;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+img {
+  max-width: 400px;
+}
+
+#nominee_header,
+#header {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 48px;
+  padding: 20px;
+  border-bottom: 2px solid #081D1F;
+}
+
+#nominee_header {
+  font-size: 36px;
+}
+
+#subheader {
+  font-size: 18px;
+  color: #676767;
+  position: relative;
+  top: 8px;
+}
+
+#container {
+  width: 800px;
+  margin: auto;
+}
+
+#categories {
+  margin-top: 25px;
+}
+
+.category {
+  margin-bottom: 25px;
+  margin-top: 10px;
+  cursor: pointer;
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: .0.25s ease-in-out;
+}
+
+.category:hover {
+  color: #900505;
+}
+
+.new_category {
+  font-size: 20px;
+  margin-top: -10px;
+}
+
+.category_title {
+  font-weight: 700;
+  font-size: 36px;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.add_nominee_form,
+.category_form {
+  display: none;
+}
+
+a,
+.button,
+#new_category_submit,
+.new_category_button {
+  cursor: pointer;
+  -webkit-transition: 0.25s ease-in-out;
+  -moz-transition: 0.25s ease-in-out;
+  -o-transition: 0.25s ease-in-out;
+  transition: .0.25s ease-in-out;
+}
+
+a:hover,
+.button:hover,
+#new_category_submit:hover,
+.new_category_button:hover {
+  color: #900505;
+}
+
+#add_nominee_submit,
+#new_category_submit {
+  font-weight: 700;
+}
+
+.candidate {
+  width: 50%;
+  position: relative;
+  top: 22px;
+  top: 26px;
+  font-weight: 700;
+  font-size: 24px;
+}
+.menu {
+  font-weight: 300;
+}
+
+.nominee_header {
+  font-weight: 700;
+}
+
+#nominees_list {
+  margin: 10px;
+}
+
+.nominee_container {
+  font-weight: 300;
+  margin: 10px;
+  font-size: 24px;
+}
+
+#nominee1 {
+  border-right: 1px solid black;
+  width: calc(50% - 1px);
+}
+
+.footer {
+  margin: 10px;
+}
+
+.link {
+  font-weight: 300;
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+.link_title {
+  text-decoration: underline;
+}
