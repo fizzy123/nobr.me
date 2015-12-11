@@ -1,5 +1,6 @@
 import string, random, re, pdb, json, pytz, urllib
 from datetime import datetime
+from time import mktime
 import oauth2 as oauth
 
 from django.core.urlresolvers import reverse
@@ -7,8 +8,15 @@ from django.http import HttpResponse
 
 from general.models import ImageUpload
 
+class DefaultEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return int(mktime(obj.timetuple()))
+
+        return json.JSONEncoder.default(self, obj)
+
 def json_response(context):
-    return HttpResponse(json.dumps(context), content_type="application/json")
+    return HttpResponse(json.dumps(context, cls = DefaultEncoder), content_type="application/json")
 
 def rand_str_gen(size):
     return ''.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for x in range(size))
@@ -55,21 +63,21 @@ def parse_post_content(raw_content, mode):
         m = re.search(r"\[\[(?P<link>[^\t\n\r\f\v\[\]]+?)\|(?P<link_text>[^\t\n\r\f\v\[\]]+?)\]\]", content)
         while m:
             content = ''.join([content[:m.start()],
-                      "<div class='link ",
-                      m.group('link'),
+                      "<a class='link' href='/",
+                      m.group('link').replace(' ', '_'),
                       "'>", 
                       m.group('link_text'),
-                      "</div>",
+                      "</a>",
                       content[m.end():]])
             m = re.search(r"\[\[(?P<link>[^\t\n\r\f\v\[\]]+?)\|(?P<link_text>[^\t\n\r\f\v\[\]]+?)\]\]", content)
         m = re.search(r"\[\[(?P<link>[^\t\n\r\f\v\[\]]+?)\]\]", content)
         while m:
             content = ''.join([content[:m.start()],
-                      "<div class='link ",
-                      m.group('link'),
+                      "<a class='link' href='/",
+                      m.group('link').replace(' ', '_'),
                       "'>",
                       m.group('link'),
-                      "</div>",
+                      "</a>",
                       content[m.end():]])
             m = re.search(r"\[\[(?P<link>[^\t\n\r\f\v\[\]]+?)\]\]", content)
     
@@ -124,20 +132,20 @@ def parse_post_content(raw_content, mode):
             m = re.search(r"<img src='/media/images/(?P<link>[^\t\n\r\f\v\[\]]+?\.(jpg|JPG|gif|GIF|png|bmp|BMP))'>", content)
         
         # Convert wiki links
-        m = re.search(r"<div class='link (?P<link>[^\t\n\r\f\v]+?)'>(?P<link_text>[^\t\n\r\f\v]+?)</div>", content)
+        m = re.search(r"<a class='link' href='/(?P<link>[^\t\n\r\f\v]+?)'>(?P<link_text>[^\t\n\r\f\v]+?)</a>", content)
         while m:
             if parse_wiki_link(m.group('link'),mode) == m.group('link_text'):
                 content = ''.join([content[:m.start()], 
-                          "[[", parse_wiki_link(m.group('link'),mode), "]]",
+                          "[[", parse_wiki_link(m.group('link').replace('_', ' '), mode), "]]",
                           content[m.end():]])
             else:
                 content = ''.join([content[:m.start()],
-                          "[[", parse_wiki_link(m.group('link'),mode), "|", m.group('link_text'), "]]",
+                          "[[", parse_wiki_link(m.group('link').replace('_', ''), mode), "|", m.group('link_text'), "]]",
                           content[m.end():]])
-            m = re.search(r"<a href='/wiki/(?P<link>[^\t\n\r\f\v]+?)/'>(?P<link_text>[^\t\n\r\f\v]+?)</a>", content)
+            m = re.search(r"<a class='link' href='/(?P<link>[^\t\n\r\f\v]+?)'>(?P<link_text>[^\t\n\r\f\v]+?)</a>", content)
             
         # Convert links
-        m = re.search(r"<a href='(?P<link>\S+?)'>(?P<link_text>\S+?)</a>", content)
+        m = re.search(r"<a href='(?P<link>[^\t\n\r\f\v]+?)'>(?P<link_text>[^\t\n\r\f\v]+?)</a>", content)
         while m:
             if m.group('link') == m.group('link_text'):
                 content = ''.join([content[:m.start()], 
@@ -147,7 +155,7 @@ def parse_post_content(raw_content, mode):
                 content = ''.join([content[:m.start()],
                           "[", m.group('link'), ",", m.group('link_text'), "]",
                           content[m.end():]])
-            m = re.search(r"<a href='(?P<link>\S+?)'>(?P<link_text>\S+?)</a>", content)
+            m = re.search(r"<a href='(?P<link>[^\t\n\r\f\v]+?)'>(?P<link_text>[^\t\n\r\f\v]+?)</a>", content)
             
     return content
 

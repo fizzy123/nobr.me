@@ -17,7 +17,7 @@ class Page(models.Model):
     source = models.CharField(max_length=500, blank = True, null = True)
     url = models.CharField(max_length=500)
     note_updated = models.DateTimeField(blank = True, null = True)
-    tags = models.ManyToManyField(Tag, blank = True, null = True)
+    tags = models.ManyToManyField(Tag, blank = True)
     public = models.BooleanField(default=False)
 
     def build_page_dict(self):

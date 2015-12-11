@@ -3,6 +3,7 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu:500);
 
 body {
+    background-color: #EEE;
 	font-family: 'Lato', sans-serif;
 	text-align: center;
     padding: 0px;
@@ -17,7 +18,6 @@ img {
 div {
     text-align: left;
 	clear: both;
-	display: inline-block;
     line-height: 180%;
 }
 
@@ -33,18 +33,23 @@ iframe{
 }
 
 a:link, a:visited {
-    color:#1E6C1E;
+    color:#036564;
     text-decoration:none;
     font-weight:bold;
 }
 
 div.link {
-    color:#1E6C1E;
+    color:#036564;
     text-decoration:none;
     font-weight:bold;
+    display: inline-block;
 }
 
 div.link:hover {
+    cursor: pointer;
+}
+
+img.link:hover {
     cursor: pointer;
 }
 
@@ -115,9 +120,14 @@ div.link:hover {
 }
 
 .header {
-	width: 100%;
+	width: 800px;
+    padding: 50px;
+    background-color: #031634;
 	margin-top: 20px;
     margin-bottom:30px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .footer {
@@ -165,12 +175,17 @@ div.link:hover {
 }
 
 .content {
+    padding: 0px 50px;
 	font-weight: 100;
 	line-height: 180%;
 }
 
 .mid-column {
-	width: 700px;
+    background-color: #FFF;
+	width: 800px;
+    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .mid-column img {
@@ -181,7 +196,7 @@ div.link:hover {
 
 hr {
 	border: none;
-	background-color: #ccc;
+	background-color: #031634;
 	color: #ccc;
 	height: 2px;
 }
@@ -192,23 +207,32 @@ hr {
 }
 
 .subtitle {
-   width:100%;
+   width:70%;
    text-align:center;
    margin-left:auto;
    margin-right:auto;
    font-style:italic;
    color: #555;
+   margin-bottom: 30px;
 }
 
 h1 {
     color: white;
-    background-color: black;
+    background-color: #031634;
     padding: 20px;
 }
 
 button {
-    background-color: #1E6C1E;
+    background-color: #031634;
     border: none;
     color: white;
     padding: 5px 10px 5px 10px;
+}
+
+canvas {
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:-1;
+    width: 100%;
 }

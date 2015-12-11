@@ -15,6 +15,12 @@
     ></script>
     <script type="text/javascript"
             src="{% static 'jquery.cookie.js' %}"></script>
+    <script type="text/javascript"
+            src="{% static 'glitch.jquery.js' %}"
+    ></script>
+    <script type="text/javascript"
+            src="{% static 'glitch-canvas.min.js' %}"
+    ></script>
     {% block javascript %}
     {% endblock %}
     <link rel="stylesheet"
@@ -23,15 +29,126 @@
     />
     <script src="{% static 'highlight/highlight.pack.js' %}" >   
     </script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <title>Hello!</title>
+    <script>
+      $(document).ready(function() {
+        hljs.initHighlightingOnLoad()
+      })
+    </script>
+    <script type="text/javascript" src="{% static 'paper.js' %}"></script> 
+    <script type="text/paperscript" canvas="myCanvas">
+
+    var points = 25;
+
+    var length = 10;
+
+    var bounds = Rectangle(view.center.x-500, 0, 1000, 350)
+//        var colors = ['#6A4A3C','#00A0B0','#CC333F','#EB6841','#EDC951']
+    var colors = ['#E8DDCB','#CDB380','#036564','#033649','#031634']
+
+    $('.change-background-color').css('background-color',colors[0])
+    //for (var j = 0; j < things; i++){
+    var Boid = Base.extend({
+        initialize: function(position){
+            this.path = new Path({
+                    strokeColor: colors[Math.floor(Math.random() * colors.length)],
+                    strokeWidth: 25,
+                    strokeCap: 'round',
+            });
+
+            if (position) {
+                this.start = position;
+            } else {
+                this.start = Point.random() * view.size
+            }
+            this.vect = new Point(2,0)
+
+            for (var i = 0; i < points; i++) {
+                this.path.add(this.start + new Point(i * length, 0));
+            }
+
+        },
+        update: function() {
+            this.vect.angle += 20 - 40*Math.random()
+            this.path.firstSegment.point += this.vect;
+            if (this.path.firstSegment.point.x < 0 || this.path.firstSegment.point.x > $(document).width()) {
+                this.vect.x = -this.vect.x
+            }
+
+            if (this.path.firstSegment.point.y < 0 || this.path.firstSegment.point.y > $(document).height()) {
+                this.vect.y = -this.vect.y
+            }
+            for (var i = 0; i < points - 1; i++) {
+                var segment = this.path.segments[i];
+                var nextSegment = segment.next;
+                var vector = segment.point - nextSegment.point;
+                vector.length = length;
+                nextSegment.point = segment.point - vector;
+            }
+            this.path.smooth();
+        }
+    })
+    view.viewSize = new Size($(document).width(), $(document).height());
+
+    view.draw();
+    var boids = [];
+    var background = new Shape.Rectangle({
+        rectangle: view.bounds,
+        fillColor: "#eee"
+    });
+    for (var i=0; i<$(document).height() / 30; i++) {
+        boids.push(new Boid());
+    }
+
+    var glitching = false;
+    var log = true;
+    var timer;
+
+    function glitchEffect() {
+        view.pause()
+        glitching = true;
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d')
+        var parameters = { amount: Math.random() * 99, seed: Math.random() * 100, iterations: 3, quality: Math.random() * 99 };
+        function drawGlitchedImageData(image_data) {
+            ctx.putImageData(image_data, 0, 0);
+        }
+        glitch(ctx.getImageData( 0, 0, canvas.clientWidth, canvas.clientHeight ), parameters, drawGlitchedImageData)
+        setTimeout(function() {
+            if (Math.random() < 0.3) {
+                glitchEffect();
+            } else {
+                view.play();
+            }
+        }, 1000/6)
+    }
+
+    function onFrame() {
+        for (var i = 0; i < boids.length; i++) {
+            boids[i].update()
+        }
+        if (Math.random() < 0.01 && !glitching) {
+            glitchEffect();
+        } else {
+            glitching = false;
+        }
+    }
+
+    </script>
+
+    <title>(´・ω・)っ由</title>
 </head>
 
 <body>
+
+    <div class='header'>
+      <img class='link' data-link='Hi!' src='{% static "nobel-logo.png" %}'>
+    </div>
+
 	<div class='mid-column'>
 	{% block content %}
 	{% endblock %}
     </div>
-
+  <canvas resize='true' id='myCanvas'>
+    </canvas>
     
 </body>

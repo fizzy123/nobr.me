@@ -38,8 +38,14 @@ def index(request):
         page_dicts.append(page.build_page_dict())
     return render(request, 'general/index.html', {'quote':quote, 'pages':json.dumps(page_dicts)})
 
+def isawthis(request):
+    return render(request, 'general/isawthis.html', {})
+
 def about(request):
     return render(request, 'general/about.html', {})
+
+def bigpicture(request):
+    return render(request, 'general/bigpicture.html', {});
 
 def tag(request, name=None):
     if name:

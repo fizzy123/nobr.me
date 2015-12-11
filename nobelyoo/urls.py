@@ -8,9 +8,9 @@ from django.conf.urls.static import static
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-	url(r'^', include('general.urls', namespace='general')),
+	url(r'^', include('wiki.urls', namespace='wiki')),
 	url(r'^blog/', include('blog.urls', namespace='blog')),
-	url(r'^wiki/', include('wiki.urls', namespace='wiki')),
+	url(r'^general/', include('general.urls', namespace='general')),
 	url(r'^gif/', include('gif.urls', namespace='gif')),
 	url(r'^gif_or_jpeg/', include('gif_or_jpeg.urls', namespace='gif_or_jpeg')),
 	url(r'^archives/', include('archives.urls',namespace='archives')),
